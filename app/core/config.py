@@ -168,6 +168,7 @@ class CacheNamespace(BaseModel):
 class CacheConfig(BaseModel):
     """Настройки кэша"""
 
+    enabled: bool = True
     prefix: str = "fastapi-cache"
     namespace: CacheNamespace = CacheNamespace()
 
@@ -192,7 +193,7 @@ class Settings(BaseSettings):
     admin: AdminConfig
     rate_limit: RateLimitConfig
     redis: RedisConfig = RedisConfig()
-    cache: CacheConfig = CacheConfig()
+    cache: CacheConfig
 
 
 settings = Settings()  # type: ignore

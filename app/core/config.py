@@ -17,6 +17,38 @@ LOG_DEFAULT_FORMAT = (
 )
 
 
+class SiteConfig(BaseModel):
+    """Конфигурация сайта — домен, протокол, название, базовые URL"""
+
+    site_name: str
+    domain: str
+    protocol: str = "https"
+    environment: Literal["development", "staging", "production"] = "development"
+
+    # Настройки куки
+    cookie_max_age: int = 3600  # время жизни куки в секундах
+    cookie_secure: bool = False  # будет установлено через .model_post_init()
+
+    # Список разрешенных доменов для кросс-доменных запросов (сайты с которых можно отправлять запросы на наш API)
+    allowed_origins: list[str] = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:1080",
+        "http://localhost:1025",
+    ]
+
+    @property
+    def base_url(self) -> str:
+        return f"{self.protocol}://{self.domain}"
+
+    def model_post_init(self, __context) -> None:
+        """Установка cookie_secure на основе окружения"""
+        if self.environment == "production":
+            self.cookie_secure = True
+        else:
+            self.cookie_secure = False
+
+
 class RunConfig(BaseModel):
     """Конфигурация запуска"""
 
@@ -69,20 +101,6 @@ class ApiPrefix(BaseModel):
 
     prefix: str = "/api"
     v1: ApiV1Prefix = ApiV1Prefix()
-
-    cookie_max_age: int = 3600  # время жизни куки в секундах
-
-    # Автоматическое определение на основе переменной окружения (True - только для HTTPS, False - для HTTP)
-    # В Docker (ENVIRONMENT=production uvicorn main:app --host 0.0.0.0 --port 8000)
-    cookie_secure: bool = os.getenv("ENVIRONMENT") == "production"
-
-    # Список разрешенных доменов для кросс-доменных запросов (сайты с которых можно отправлять запросы на наш API)
-    allowed_origins: list[str] = [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://localhost:1080",
-        "http://localhost:1025",
-    ]
 
     @property
     def bearer_token_url(self) -> str:
@@ -173,6 +191,20 @@ class CacheConfig(BaseModel):
     namespace: CacheNamespace = CacheNamespace()
 
 
+class SMTPConfig(BaseModel):
+    """Конфигурация SMTP для отправки писем"""
+
+    # Режим работы приложения: False - письма уходили в MailHog, True - отправляются на реальный SMTP
+    enabled: bool = False
+
+    host: str  # SMTP-сервер (smtp.gmail.com, smtp.yandex.ru, smtp.mail.ru, smtp-mail.outlook.com , smtp.sendgrid.net)
+    port: int = 587  # Порт для подключения: 587 (TLS), 465 (SSL), 25 (устаревший)
+    username: str  # Логин (обычно email)
+    password: str  # (app password - пароль для приложения)
+    use_tls: bool = True  # Использовать ли шифрование TLS
+    timeout: int = 10  # Максимальное время ожидания ответа от сервера (в секундах)
+
+
 class Settings(BaseSettings):
     """Настройка приложения"""
 
@@ -182,6 +214,7 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
     )
+    site: SiteConfig
     run: RunConfig = RunConfig()
     gunicorn: GunicornConfig = GunicornConfig()
     logging: LoggingConfig = LoggingConfig()
@@ -194,6 +227,7 @@ class Settings(BaseSettings):
     rate_limit: RateLimitConfig
     redis: RedisConfig = RedisConfig()
     cache: CacheConfig
+    smtp: SMTPConfig
 
 
 settings = Settings()  # type: ignore

@@ -1,3 +1,5 @@
+import contextlib
+
 from typing import TYPE_CHECKING, Annotated
 from fastapi import Depends
 
@@ -32,3 +34,6 @@ async def get_access_tokens_db(
     yield AccessToken.get_db(
         session=session,
     )
+
+
+get_access_token_db_context = contextlib.asynccontextmanager(get_access_tokens_db)

@@ -1,3 +1,5 @@
+import contextlib
+
 from typing import TYPE_CHECKING, Annotated
 from fastapi import Depends
 
@@ -24,3 +26,6 @@ async def get_users_db(
         SQLAlchemyUserDatabase: Адаптер для User
     """
     yield User.get_db(session=session)
+
+
+get_users_db_context = contextlib.asynccontextmanager(get_users_db)

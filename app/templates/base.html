@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %} MySite {% endblock %}</title>
+<!--  <link rel="icon" href="">-->
+  <link rel="stylesheet" href="/static/css/main.css">
+  <script
+    src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"
+    integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz"
+    crossorigin="anonymous">
+  </script>
+</head>
+
+<body>
+  <header>
+  </header>
+
+  <main>
+    {% block main %}
+      <h1>Основной контент</h1>
+    {% endblock %}
+  </main>
+
+  <footer>
+      <p>© 2026</p>
+  </footer>
+</body>
+</html>

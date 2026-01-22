@@ -26,6 +26,11 @@ def conditional_cache(*cache_args, **cache_kwargs):
     return cache(*cache_args, **cache_kwargs)
 
 
+async def noop(*args, **kwargs) -> None:
+    """Пустая асинхронная функция для безопасного `await`."""
+    pass
+
+
 def conditional_clear(*args, **kwargs):
     """
     Условная очистка кэша: вызывает `FastAPICache.clear()` только если кэширование включено или установлен "production".
@@ -42,4 +47,4 @@ def conditional_clear(*args, **kwargs):
     """
     if settings.cache.enabled or settings.site.environment == "production":
         return FastAPICache.clear(*args, **kwargs)
-    return None
+    return noop()

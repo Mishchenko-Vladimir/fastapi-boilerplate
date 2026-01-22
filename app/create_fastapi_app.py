@@ -149,7 +149,7 @@ def create_app(
     # Добавления и настройка CORS.
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.api.allowed_origins,
+        allow_origins=settings.site.allowed_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

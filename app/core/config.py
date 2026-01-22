@@ -86,6 +86,8 @@ class ViewPrefix(BaseModel):
     """Конфигурация префикса для страниц"""
 
     home: str = ""
+    page_missing: str = "/page-missing"
+    limit_exceeded: str = "/limit-exceeded"
 
 
 class ApiV1Prefix(BaseModel):

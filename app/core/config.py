@@ -85,13 +85,14 @@ class LoggingConfig(BaseModel):
 class ViewPrefix(BaseModel):
     """Конфигурация префикса для страниц"""
 
-    pass
+    home: str = ""
 
 
 class ApiV1Prefix(BaseModel):
     """Конфигурация префикса API версии 1"""
 
     prefix: str = "/v1"
+    webhooks: str = "/webhooks"
     auth: str = "/auth"
     users: str = "/users"
 

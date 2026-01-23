@@ -5,7 +5,7 @@ from core.config import settings
 
 
 # Защита от спама (bruteforce).
-if settings.rate_limit.enabled or settings.site.environment == "production":
+if settings.rate_limit.enabled and settings.site.environment != "testing":
     limiter = Limiter(
         key_func=get_remote_address,
         default_limits=settings.rate_limit.default_limits,

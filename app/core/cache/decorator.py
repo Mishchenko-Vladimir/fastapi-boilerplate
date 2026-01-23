@@ -6,20 +6,17 @@ from core.config import settings
 
 def conditional_cache(*cache_args, **cache_kwargs):
     """
-    Условный декоратор кэширования: применяет кэширование только если оно включено в настройках или установлен "production".
-
-    Обёртка над `@cache` из `fastapi-cache`, которая проверяет `settings.cache.enabled`.
-    Если кэширование отключено — функция выполняется без кэширования.
+    Условный декоратор кэширования: применяет кэширование только если оно включено в настройках
+    и окружение не является тестовым.
 
     Args:
-        *cache_args: Позиционные аргументы, передаваемые в `@cache` (например, время жизни).
-        **cache_kwargs: Именованные аргументы, передаваемые в `@cache` (например, `namespace`, `key_builder`).
+        *cache_args: Позиционные аргументы для @cache (например, время жизни).
+        **cache_kwargs: Именованные аргументы для @cache.
 
     Returns:
-        Callable: Декоратор `@cache` (если кэш включён) или тождественная функция (если отключён).
+        Callable: Декоратор @cache или обёртка без кэширования.
     """
-    if not settings.cache.enabled and settings.site.environment != "production":
-        # Если кэш отключён — возвращаем функцию без изменений
+    if not settings.cache.enabled or settings.site.environment == "testing":
         return lambda func: func
 
     # Иначе — применяем настоящий @cache
@@ -33,7 +30,7 @@ async def noop(*args, **kwargs) -> None:
 
 def conditional_clear(*args, **kwargs):
     """
-    Условная очистка кэша: вызывает `FastAPICache.clear()` только если кэширование включено или установлен "production".
+    Условная очистка кэша: вызывает `FastAPICache.clear()` только если кэширование включено и не является тестовым.
 
     Предотвращает попытки очистки кэша, когда он отключён (например, в тестах или dev-среде).
     Безопасно использовать в любом окружении.
@@ -45,6 +42,6 @@ def conditional_clear(*args, **kwargs):
     Returns:
         Awaitable[None] | None: Результат `FastAPICache.clear()` (если кэш включён), иначе `None`.
     """
-    if settings.cache.enabled or settings.site.environment == "production":
+    if settings.cache.enabled and settings.site.environment != "testing":
         return FastAPICache.clear(*args, **kwargs)
     return noop()

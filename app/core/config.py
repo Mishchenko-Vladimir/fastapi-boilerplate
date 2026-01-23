@@ -23,7 +23,9 @@ class SiteConfig(BaseModel):
     site_name: str
     domain: str
     protocol: str = "https"
-    environment: Literal["development", "staging", "production"] = "development"
+    environment: Literal["development", "testing", "staging", "production"] = (
+        "development"
+    )
 
     # Настройки куки
     cookie_max_age: int = 3600  # время жизни куки в секундах

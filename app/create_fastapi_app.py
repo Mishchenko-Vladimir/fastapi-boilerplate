@@ -47,22 +47,23 @@ async def lifespan(app: FastAPI):
         - Закрывает соединение с БД при завершении.
     """
     # startup (старт приложения)
-    if settings.cache.enabled:
-        redis = Redis(
-            host=settings.redis.host,
-            port=settings.redis.port,
-            db=settings.redis.db.cache,
-        )
-        FastAPICache.init(
-            RedisBackend(redis),
-            prefix=settings.cache.prefix,
-        )
-        log.info("Кэширование ВКЛЮЧЕНО")
-    else:
-        log.info("Кэширование ОТКЛЮЧЕНО")
+    if settings.site.environment != "testing":
+        if settings.cache.enabled:
+            redis = Redis(
+                host=settings.redis.host,
+                port=settings.redis.port,
+                db=settings.redis.db.cache,
+            )
+            FastAPICache.init(
+                RedisBackend(redis),
+                prefix=settings.cache.prefix,
+            )
+            log.info("Кэширование ВКЛЮЧЕНО")
+        else:
+            log.info("Кэширование ОТКЛЮЧЕНО")
 
-    # Создание суперпользователя при старте, если его нет.
-    await create_superuser()
+        # Создание суперпользователя при старте, если его нет.
+        await create_superuser()
 
     yield
     # shutdown (завершение приложения)
@@ -138,7 +139,7 @@ def create_app(
     )
 
     # Защита от bruteforce и DDoS.
-    if settings.rate_limit.enabled:
+    if settings.rate_limit.enabled and settings.site.environment != "testing":
         app.state.limiter = limiter  # type: ignore
         app.add_middleware(SlowAPIMiddleware)
         app.add_middleware(CustomRateLimitMiddleware)

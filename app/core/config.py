@@ -90,6 +90,9 @@ class ViewPrefix(BaseModel):
     home: str = ""
     page_missing: str = "/page-missing"
     limit_exceeded: str = "/limit-exceeded"
+    verify_email: str = "/verify-email"
+    change_password: str = "/change-password"
+    password_reset: str = "/password-reset"
 
 
 class ApiV1Prefix(BaseModel):

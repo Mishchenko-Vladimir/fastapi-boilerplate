@@ -156,14 +156,16 @@ def create_app(
         allow_headers=["*"],
     )
 
-    authentication_backend = AdminAuth(
-        secret_key=settings.access_token.verification_token_secret
-    )
-    admin = Admin(
-        app=app,
-        session_maker=db_helper.session_factory,
-        authentication_backend=authentication_backend,
-    )
+    if settings.site.environment != "testing":
+        authentication_backend = AdminAuth(
+            secret_key=settings.access_token.verification_token_secret
+        )
+        admin = Admin(
+            app=app,
+            session_maker=db_helper.session_factory,
+            authentication_backend=authentication_backend,
+        )
+        register_admin_views(admin)
 
     # Создание статических URL для Swagger, ReDoc.
     if create_custom_static_urls:
@@ -174,5 +176,4 @@ def create_app(
 
     # Регистрация обработчиков ошибок(404, 500 и др.) из модуля errors_handlers
     register_errors_handlers(app)
-    register_admin_views(admin)
     return app

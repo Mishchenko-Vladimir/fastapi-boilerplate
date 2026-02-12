@@ -23,6 +23,11 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 
+async def _clear_users_cache():
+    """Асинхронная обёртка для безопасной очистки кэша списка пользователей."""
+    await clear_cache(namespace=settings.cache.namespace.users_list)
+
+
 class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
     """
     Класс для управления жизненным циклом пользователя: регистрация, сброс пароля, подтверждение почты и т.д.
@@ -88,12 +93,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
         )
 
         if self.background_tasks:
-            self.background_tasks.add_task(
-                clear_cache,
-                namespace=settings.cache.namespace.users_list,
-            )
+            self.background_tasks.add_task(_clear_users_cache)
         else:
-            await clear_cache(namespace=settings.cache.namespace.users_list)
+            await _clear_users_cache()
 
     async def on_after_forgot_password(
         self,
@@ -202,12 +204,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
                 send_email_confirmed,
                 user=user,
             )
-            self.background_tasks.add_task(
-                clear_cache,
-                namespace=settings.cache.namespace.users_list,
-            )
+            self.background_tasks.add_task(_clear_users_cache)
         else:
-            await clear_cache(namespace=settings.cache.namespace.users_list)
+            await _clear_users_cache()
 
     async def on_after_delete(
         self,
@@ -232,9 +231,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
         log.warning("User %r has been deleted.", user.id)
 
         if self.background_tasks:
-            self.background_tasks.add_task(
-                clear_cache,
-                namespace=settings.cache.namespace.users_list,
-            )
+            self.background_tasks.add_task(_clear_users_cache)
         else:
-            await clear_cache(namespace=settings.cache.namespace.users_list)
+            await _clear_users_cache()

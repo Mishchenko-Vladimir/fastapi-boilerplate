@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Подтверждение E-mail
+{% endblock %}
+
+{% block main %}
+  <h3>Страница проверки электронной почты.</h3>
+  <h3>Проверяет валидность токена, пользователь с таким ID существует и не подтверждал почту.</h3>
+
+  <input type="hidden" id="verify-email" value="{{ url_for('verify:verify') }}">
+
+{% endblock %}

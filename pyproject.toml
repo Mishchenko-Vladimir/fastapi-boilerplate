@@ -1,7 +1,7 @@
 [project]
 name = "fastapi-boilerplate"
 version = "0.1.0"
-description = "Add your description here"
+description = "Professional FastAPI Boilerplate with Clean Architecture"
 requires-python = ">=3.14"
 dependencies = [
     "aiosmtplib>=5.0.0",
@@ -26,4 +26,12 @@ dependencies = [
     "sqladmin[full]>=0.22.0",
     "sqlalchemy[asyncio]>=2.0.45",
     "uvicorn[standard]>=0.40.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "app"]
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning:slowapi.*:",
+    "ignore::RuntimeWarning:coroutine 'noop' was never awaited"
 ]

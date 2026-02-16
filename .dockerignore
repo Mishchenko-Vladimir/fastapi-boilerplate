@@ -1,2 +1,18 @@
+# Игнорируем тесты
+tests/
+
+# Игнорируем локальное окружение и IDE
 .idea/
 .venv/
+.git/
+.vscode/
+
+# Игнорируем кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Игнорируем кэш инструментов
+.pytest_cache/
+.coverage

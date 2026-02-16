@@ -28,7 +28,6 @@ from api.webhooks import webhooks_router
 from core import db_helper, limiter, settings, BASE_DIR
 from exceptions.handlers import register_errors_handlers
 
-
 log = logging.getLogger(__name__)
 
 
@@ -61,9 +60,6 @@ async def lifespan(app: FastAPI):
             log.info("Кэширование ВКЛЮЧЕНО")
         else:
             log.info("Кэширование ОТКЛЮЧЕНО")
-
-        # Создание суперпользователя при старте, если его нет.
-        await create_superuser()
 
     yield
     # shutdown (завершение приложения)

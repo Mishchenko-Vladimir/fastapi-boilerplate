@@ -1,11 +1,9 @@
 import logging
-import os
 
 from typing import Literal
 from pathlib import Path
 from pydantic import BaseModel, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 
 # Получаем путь до корневой директории проекта
 # ...\fastapi-boilerplate\app\

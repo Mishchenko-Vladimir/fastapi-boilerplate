@@ -91,6 +91,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
             "User %r has registered.",
             user.id,
         )
+        await self.request_verify(user, request)
 
         if self.background_tasks:
             self.background_tasks.add_task(_clear_users_cache)

@@ -22,9 +22,25 @@ class UserAdmin(ModelView, model=User):
         User.is_active,
         User.is_superuser,
         User.is_verified,
+        User.created_at,
     ]
+    # Форматирование отображения полей
+    column_formatters = {
+        # m — объект модели User
+        # a — название атрибута ('created_at')
+        User.created_at: lambda m, a: (
+            m.created_at.strftime("%d.%m.%Y %H:%M") if m.created_at else ""
+        )
+    }
     # Переименование полей
     column_labels = {
+        User.id: "ID",
+        User.first_name: "Имя",
+        User.email: "Email",
+        User.is_active: "Активен",
+        User.is_superuser: "Суперпользователь",
+        User.is_verified: "Почта подтверждена",
+        User.created_at: "Дата регистрации",
         User.hashed_password: "Password",
     }
     # Какие поля не показывать в форме редактирования
@@ -36,6 +52,7 @@ class UserAdmin(ModelView, model=User):
         User.id,
         User.is_superuser,
         User.is_verified,
+        User.created_at,
     ]
 
     async def on_model_change(

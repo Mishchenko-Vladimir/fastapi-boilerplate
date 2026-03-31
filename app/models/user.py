@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from core.auth.user_id_type import UserIdType
 from .base import Base
-from .mixins import IntIdPkMixin
+from .mixins import IntIdPkMixin, CreatedAtMixin
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession  # noqa
@@ -30,7 +30,12 @@ class SQLAlchemyUserDatabase(SQLAlchemyUserDatabaseGeneric):
         return list(results.all())
 
 
-class User(Base, IntIdPkMixin, SQLAlchemyBaseUserTable[UserIdType]):
+class User(
+    Base,
+    IntIdPkMixin,
+    CreatedAtMixin,
+    SQLAlchemyBaseUserTable[UserIdType],
+):
     """Таблица пользователей"""
 
     first_name: Mapped[str] = mapped_column(

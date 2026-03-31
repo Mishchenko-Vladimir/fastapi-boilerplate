@@ -23,9 +23,9 @@ from admin.admin_auth import AdminAuth
 from middleware.custom_rate_limit_middleware import CustomRateLimitMiddleware
 from middleware.security_headers_middleware import SecurityHeadersMiddleware
 
-from actions.create_superuser import create_superuser
 from api.webhooks import webhooks_router
 from core import db_helper, limiter, settings, BASE_DIR
+from core.auth.tasks import setup_auth_scheduler
 from exceptions.handlers import register_errors_handlers
 
 log = logging.getLogger(__name__)
@@ -61,8 +61,13 @@ async def lifespan(app: FastAPI):
         else:
             log.info("Кэширование ОТКЛЮЧЕНО")
 
+    # Инициализация планировщика задач Auth
+    auth_scheduler = setup_auth_scheduler()
+    auth_scheduler.start()
+
     yield
     # shutdown (завершение приложения)
+    auth_scheduler.shutdown()
     await db_helper.dispose()  # Закрытия базы данных
 
 

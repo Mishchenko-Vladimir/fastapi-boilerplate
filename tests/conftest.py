@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from typing import AsyncIterator, Any
 from httpx import AsyncClient, ASGITransport
 from faker import Faker
+from unittest.mock import patch, AsyncMock
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -19,7 +20,6 @@ from create_fastapi_app import create_app
 from core.db_helper import db_helper
 from models import Base, User
 from views import router as views_router
-
 
 faker = Faker()
 
@@ -106,6 +106,16 @@ async def client(test_engine, test_session):
         yield ac
 
     app.dependency_overrides.clear()  # type: ignore
+
+
+@pytest.fixture(autouse=True)
+def mock_aiosmtplib():
+    """
+    Автоматически подменяет отправку почты на пустышку для всех тестов.
+    Теперь aiosmtplib.send не будет пытаться соединиться с 127.0.0.1.
+    """
+    with patch("aiosmtplib.send", new_callable=AsyncMock) as mock:
+        yield mock
 
 
 @pytest.fixture(scope="function")

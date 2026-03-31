@@ -27,6 +27,7 @@ allowing you to focus on implementing business ideas from the very first minute.
 |----------|---:|
 | **🐍 Language:** Python 3.14+ | [![Python](https://img.shields.io/badge/Python-3.14%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/) |
 | **⚡ Framework:** FastAPI | [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/) |
+| **📅 Scheduler:** APScheduler | [![APScheduler](https://img.shields.io/badge/APScheduler-black?style=for-the-badge&logo=python&logoColor=white)](https://readthedocs.io) |
 | **🚀 ASGI Server:** Uvicorn + Gunicorn | [![Uvicorn](https://img.shields.io/badge/Uvicorn-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://www.uvicorn.org/) [![Gunicorn](https://img.shields.io/badge/Gunicorn-F46D43?style=for-the-badge&logo=apache&logoColor=white)](https://gunicorn.org/) |
 | **🗄️ Database:** PostgreSQL (asyncpg) | [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/) |
 | **🔁 ORM:** SQLAlchemy (async) | [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-0B5566?style=for-the-badge&logo=python&logoColor=white)](https://www.sqlalchemy.org/) |
@@ -54,6 +55,10 @@ allowing you to focus on implementing business ideas from the very first minute.
 - **🛡️ Traffic Protection (Slowapi)**  
   > Built-in `Rate Limiting` to protect endpoints from brute-force attacks and overloads.  
   > Configurable `CORS` settings for secure frontend integration.
+ 
+- **🧹 Automatic DB Hygiene (APScheduler)**
+  > Integrated background task scheduler that automatically prunes expired tokens and deletes unverified accounts 
+  > to keep the database clean.
 
 - **🛠️ Professional Admin Panel (SQLAdmin)**  
   > Full CRUD interface with filtering and search for all database models, accessible directly in the browser.
@@ -178,6 +183,8 @@ fastapi-boilerplate/
 > ```
 
 4. **Run via Docker**
+> If you are running the image on Windows, make sure that the files `docker-build/app/prestart.sh` and `app/run.py` use LF line endings, not CRLF.
+> 
 > Build image named `app`:
 > ```bash
 > docker compose build app

@@ -26,6 +26,7 @@
 |----------|---:|
 | **🐍 Язык:** Python 3.14+ | [![Python](https://img.shields.io/badge/Python-3.14%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/) |
 | **⚡ Фреймворк:** FastAPI | [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/) |
+| **📅 Планировщик:** APScheduler | [![APScheduler](https://img.shields.io/badge/APScheduler-black?style=for-the-badge&logo=python&logoColor=white)](https://readthedocs.io) |
 | **🚀 ASGI-сервер:** Uvicorn + Gunicorn | [![Uvicorn](https://img.shields.io/badge/Uvicorn-005571?style=for-the-badge&logo=fastapi&logoColor=white)](https://www.uvicorn.org/) [![Gunicorn](https://img.shields.io/badge/Gunicorn-F46D43?style=for-the-badge&logo=apache&logoColor=white)](https://gunicorn.org/) |
 | **🗄️ База Данных:** PostgreSQL (asyncpg) | [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/) |
 | **🔁 ORM:** SQLAlchemy (async) | [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-0B5566?style=for-the-badge&logo=python&logoColor=white)](https://www.sqlalchemy.org/) |
@@ -52,6 +53,9 @@
 - **🛡️ Защита и контроль трафика (Slowapi)**
   > Встроенный `Rate Limiting` для защиты эндпоинтов от перегрузок и brute-force атак.
   > Настройка `CORS` для безопасного взаимодействия с фронтенд-приложениями.
+- **🧹 Автоматическая гигиена БД (APScheduler)**
+  > Встроенный фоновый планировщик задач, который автоматически очищает просроченные токены и удаляет неподтвержденные 
+  > аккаунты, поддерживая базу данных в чистоте.
 - **🛠️ Профессиональная админ-панель (SQLAdmin)**
   > Полноценный интерфейс для управления данными: CRUD операции, фильтрация и поиск по всем моделям базы данных прямо в браузере.
 - **🏗️ Современная архитектура (Clean Architecture)**
@@ -166,6 +170,8 @@ fastapi-boilerplate/
 > ```
 
 4. **Запуск приложение через Docker**
+> Если вы запускаете образ в Windows, убедись что файлы `docker-build/app/prestart.sh` и `app/run.py`, стоят в расширении `LF`, а не `CRLF`.
+> 
 > Сборка образа с именем `app`:
 > ```bash
 > docker compose build app

@@ -2,12 +2,10 @@
 import logging
 
 from fastapi import FastAPI, Request, HTTPException, status
-from fastapi.responses import ORJSONResponse
 
 from pydantic import ValidationError
 from sqlalchemy.exc import DatabaseError
-from starlette.responses import RedirectResponse
-
+from starlette.responses import RedirectResponse, JSONResponse
 
 log = logging.getLogger(__name__)
 
@@ -35,7 +33,7 @@ def register_errors_handlers(app: FastAPI) -> None:
     def handle_pydantic_validation_error(
         request: Request,
         exc: ValidationError,
-    ) -> ORJSONResponse:
+    ) -> JSONResponse:
         """
         Обрабатывает ошибки валидации Pydantic при создании/обновлении моделей.
 
@@ -44,7 +42,7 @@ def register_errors_handlers(app: FastAPI) -> None:
         :return: JSON-ответ, с деталями ошибок валидации и со статусом 422 Unprocessable Entity.
         """
 
-        return ORJSONResponse(
+        return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             content={
                 "message": "Ошибка валидации данных",
@@ -56,7 +54,7 @@ def register_errors_handlers(app: FastAPI) -> None:
     def handle_db_error(
         request: Request,
         exc: DatabaseError,
-    ) -> ORJSONResponse:
+    ) -> JSONResponse:
         """
         Обрабатывает критические ошибки базы данных (например, разрыв соединения).
 
@@ -69,7 +67,7 @@ def register_errors_handlers(app: FastAPI) -> None:
             "Произошла ошибка базы данных",
             exc_info=exc,
         )
-        return ORJSONResponse(
+        return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
                 "message": "Произошла непредвиденная ошибка. "
@@ -98,7 +96,7 @@ def register_errors_handlers(app: FastAPI) -> None:
              - Для UI-запросов: редирект на /page-missing.
         """
         if request.url.path.startswith("/api"):
-            return ORJSONResponse(
+            return JSONResponse(
                 status_code=exc.status_code,
                 content={"detail": exc.detail},
             )

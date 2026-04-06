@@ -26,7 +26,6 @@ class SiteConfig(BaseModel):
     )
 
     # Настройки куки
-    cookie_max_age: int = 3600  # время жизни куки в секундах
     cookie_secure: bool = False  # будет установлено через .model_post_init()
 
     # Список разрешенных доменов для кросс-доменных запросов (сайты с которых можно отправлять запросы на наш API)
@@ -147,6 +146,7 @@ class AdminConfig(BaseModel):
     # True - Публичная форма аутентификации для администратора
     # False - SQLAdmin форма аутентификации
     public_auth: bool = False
+    admin_panel_url: str = "/admin-panel"
 
     admin_email: str
     admin_password: str

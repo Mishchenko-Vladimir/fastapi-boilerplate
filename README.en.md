@@ -212,4 +212,12 @@ fastapi-boilerplate/
 💌 Don’t forget to leave a ⭐ star on GitHub if you like the project! 😉
 
 ---
+
+> *💡 **Looking for more?***
+>
+> *If you need a more advanced version with **HTMX**, **CSRF protection**, and a modern **Glassmorphism UI**, check out my latest evolution of this project:*
+> 
+> *[🚀 **FastH-Core-Stack**](https://github.com/Mishchenko-Vladimir/FastH-Core-Stack)*
+
+---
 [↑ Back to top](#-fastapi-boilerplate)

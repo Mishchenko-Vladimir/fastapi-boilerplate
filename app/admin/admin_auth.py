@@ -5,7 +5,8 @@ from fastapi import Request
 from sqladmin.authentication import AuthenticationBackend
 from starlette.responses import RedirectResponse
 
-from core import db_helper, settings
+from core import db_helper
+from core.config import settings
 from core.auth.dependencies import (
     get_users_db_context,
     user_manager_context,

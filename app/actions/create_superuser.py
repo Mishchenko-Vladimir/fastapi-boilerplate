@@ -3,7 +3,8 @@ import logging
 
 from fastapi_users import exceptions
 
-from core import db_helper, settings
+from core import db_helper
+from core.config import settings
 from core.auth.dependencies import user_manager_context, get_users_db_context
 from core.auth.user_manager import UserManager
 from models.user import User

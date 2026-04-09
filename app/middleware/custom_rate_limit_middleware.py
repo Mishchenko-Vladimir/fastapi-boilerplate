@@ -1,6 +1,8 @@
 from typing import Any
 from fastapi import Request
-from fastapi.responses import ORJSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
+
+from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 
@@ -72,7 +74,7 @@ class CustomRateLimitMiddleware:
                 sent = True
 
                 if request.url.path.startswith("/api"):
-                    response = ORJSONResponse(
+                    response = JSONResponse(
                         content={"detail": "Слишком много запросов, попробуйте позже."},
                         status_code=429,
                     )

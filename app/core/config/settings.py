@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Получаем путь до корневой директории проекта
 # ...\fastapi-boilerplate\app\
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Формат логирования
 LOG_DEFAULT_FORMAT = (

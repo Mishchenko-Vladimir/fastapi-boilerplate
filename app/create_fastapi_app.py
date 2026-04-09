@@ -161,7 +161,7 @@ def create_app(
 
     if settings.site.environment != "testing":
         authentication_backend = AdminAuth(
-            secret_key=settings.access_token.verification_token_secret
+            secret_key=settings.admin.secret_key.get_secret_value()
         )
         admin = Admin(
             app=app,

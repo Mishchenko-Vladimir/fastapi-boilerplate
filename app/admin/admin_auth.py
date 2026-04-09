@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 class AdminAuth(AuthenticationBackend):
     async def login(self, request: Request) -> bool:
         # Если публичный вход выключен — показываем форму в админке
-        if not settings.admin.public_auth:
+        if not settings.admin.use_public_admin_auth:
             form = await request.form()
             email = form.get("username")
             password = form.get("password")
@@ -67,7 +67,7 @@ class AdminAuth(AuthenticationBackend):
     async def authenticate(self, request: Request) -> Union[bool, RedirectResponse]:
         try:
             # Если публичный вход выключен — проверяем сессию
-            if not settings.admin.public_auth:
+            if not settings.admin.use_public_admin_auth:
                 cookie = request.session.get("fastapiusersauth")
                 if not cookie:
                     return RedirectResponse(

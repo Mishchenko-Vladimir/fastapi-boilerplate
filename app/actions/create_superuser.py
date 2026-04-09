@@ -51,7 +51,7 @@ async def create_superuser() -> None:
 
                     user_create = UserCreate(
                         email=settings.admin.admin_email,
-                        password=settings.admin.admin_password,
+                        password=settings.admin.admin_password.get_secret_value(),
                         first_name="Admin",
                         is_active=True,
                         is_superuser=True,

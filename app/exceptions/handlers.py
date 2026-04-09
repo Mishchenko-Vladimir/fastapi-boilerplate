@@ -1,11 +1,12 @@
 # Обработчик ошибок
 import logging
 
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import FastAPI, Request, status
 
 from pydantic import ValidationError
 from sqlalchemy.exc import DatabaseError
 from starlette.responses import RedirectResponse, JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 log = logging.getLogger(__name__)
 
@@ -75,10 +76,10 @@ def register_errors_handlers(app: FastAPI) -> None:
             },
         )
 
-    @app.exception_handler(HTTPException)
+    @app.exception_handler(StarletteHTTPException)
     def http_exception_handler(
         request: Request,
-        exc: HTTPException,
+        exc: StarletteHTTPException,
     ):
         """
         Централизованный обработчик HTTP-исключений.

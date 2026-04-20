@@ -4,7 +4,11 @@ services:
       context: ./
       dockerfile: ./docker-build/app/Dockerfile
     environment:
-      APP_CONFIG__DB__URL: postgresql+asyncpg://postgres:password@pg:5432/boilerplate
+      APP_CONFIG__DB__USER: postgres
+      APP_CONFIG__DB__PASSWORD: pwd
+      APP_CONFIG__DB__HOST: localhost
+      APP_CONFIG__DB__PORT: 5432
+      APP_CONFIG__DB__NAME: boilerplate
       APP_CONFIG__DB__ECHO: 0
     ports:
       - "8000:8000"
